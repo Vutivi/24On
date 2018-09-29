@@ -1,0 +1,33 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'App:home' %}">24<strong>On</strong></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                {% if user.is_authenticated %}
+                    <li class="{% ifequal navbar 'home'%}active{% endifequal %}"><a href="{% url 'App:home' %}"><i class="fa fa-home"></i>&nbsp;Home</a></li>
+                    {% if user.is_superuser %}
+                        <li class="{% ifequal navbar 'users'%}active{% endifequal %}"><a href="{% ifequal navbar 'users'%}#{% else %}{% url 'App:users' %}{% endifequal %}"><i class="fa fa-user"></i>&nbsp;Users</a></li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+            {% if user.is_authenticated %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><p class="navbar-text">{{ user.get_full_name }}</p></li>
+                    <li><a href="{% url 'App:logout' %}"><i class="fa fa-sign-out"></i>&nbsp;Sign Out</a></li>
+                </ul>
+            {% elif navbar != 'login' %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'App:login' %}"><i class="fa fa-sign-in"></i>&nbsp;Sign In</a></li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</nav>

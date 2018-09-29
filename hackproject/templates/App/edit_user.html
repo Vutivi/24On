@@ -1,0 +1,69 @@
+{% include 'App/error.html' %}
+<div class="row">
+    <form action="" method="post" accept-charset="utf-8" class="form" role="form">
+        {% csrf_token %}
+
+        <label>Name</label>
+        <div class="row">
+            <div class="col-xs-6 col-md-6">
+                <input type="text" name="first_name" value="{{ requested_user.first_name }}" class="form-control" placeholder="First Name" required />
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <input type="text" name="last_name" value="{{ requested_user.last_name }}" class="form-control" placeholder="Last Name"  required />
+            </div>
+        </div>
+        <label>Email</label>
+        <input type="text" name="email" value="{{ requested_user.email }}" class="form-control" placeholder="Email" required = "" />
+        <label>Username</label>
+        <input type="text" name="username" value="{{ requested_user.username }}" class="form-control" placeholder="Username" required = "" />
+        <label>Phone Number</label>
+        <input type="text" name="phone_number" value="{{ requested_user.phone_number }}"  class="form-control" placeholder="Phone Number" required = "" />
+        {% if is_signup %}
+            <label>Password</label>
+            <input type="password" name="password" class="form-control password" placeholder="Password"  required = "" />
+            <input type="password" name="confirm_password" class="form-control confirm-password" placeholder="Confirm Password" required = "" />
+        {% endif %}
+        <br />
+        <label>Birth Date</label>
+        <div class="row">
+            <div class="col-xs-4 col-md-4">
+                <select name="month" class="form-control">
+                    {% for month in months %}
+                        <option {% if requested_user.date_of_birth.month == forloop.counter %}selected="selected"{% endif %} value="{{ forloop.counter }}">{{ month }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <select name="day" class="form-control">
+                    {% for day in day_range %}
+                        <option {% if requested_user.date_of_birth.day == day %}selected="selected"{% endif %} value="{{ day }}">{{ day }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <select name="year" class="form-control">
+                    {% for year in year_range %}
+                        <option {% if requested_user.date_of_birth.year == year %}selected="selected"{% endif %} value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            {% if user.is_superuser %}
+                <div class="col-lg-4">
+                    <label>Account Type</label>
+                    <select name="group" class="form-control">
+                        {% for group in groups %}
+                            <option value="{{ group.pk }}" {% if requested_user.group == group %}selected="selected"{% endif %}>{{ group.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+        </div>
+        <br />
+        <button class="btn btn-lg btn-primary btn-block signup-btn" type="submit">
+            Save
+        </button>
+    </form>
+</div>
